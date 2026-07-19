@@ -1,0 +1,896 @@
+:root{
+
+    --primary-color:#4F46E5;
+    --primary-hover:#4338CA;
+
+    --bg-color:#EEF2FF;
+
+    --sidebar-bg:#FFFFFF;
+    --chat-bg:#F8FAFC;
+
+    --text-main:#1E293B;
+    --text-muted:#64748B;
+
+    --sent-msg:#4F46E5;
+    --sent-text:#FFFFFF;
+
+    --received-msg:#FFFFFF;
+    --received-text:#1E293B;
+
+    --border-color:#E5E7EB;
+
+    --shadow:0 .5rem 1.5rem rgba(15,23,42,.08);
+
+    --sidebar-width:22rem;
+
+    --space-xs:.25rem;
+    --space-sm:.5rem;
+    --space-md:1rem;
+    --space-lg:1.5rem;
+    --space-xl:2rem;
+
+    --radius-sm:.5rem;
+    --radius-md:1rem;
+    --radius-lg:1.5rem;
+
+    --font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+    font-family:var(--font-family);
+    background:var(--bg-color);
+    color:var(--text-main);
+    min-height:100vh;
+    display:flex;
+}
+
+#box{
+    display:flex;
+    flex:1;
+    overflow:hidden;
+}
+
+/* Sidebar / Inbox */
+#sidebar {
+    flex: 0 0 var(--sidebar-width);
+    width: var(--sidebar-width);  /* <-- Enforce the width constraint */
+    min-width: 0;                 /* <-- Allows inner elements to safely shrink */
+    display: flex;
+    flex-direction: column;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    position: relative;
+}
+
+#chats_head{
+    padding:var(--space-lg);
+    display:grid;
+    grid-template-columns:1fr auto;
+    grid-template-areas:
+        "title menu"
+        "search search";
+    gap:var(--space-md);
+    border-bottom:1px solid var(--border-color);
+    position: relative;
+}
+
+#chats_head h2{
+    grid-area:title;
+    font-size:1.5rem;
+    font-weight:700;
+}
+
+#search{
+    grid-area:search;
+    width:100%;
+    padding:.8rem 1rem;
+    border-radius:999px;
+    background:#F1F5F9;
+    border:1px solid transparent;
+    transition:.2s;
+}
+
+#search:focus{
+    background:white;
+    border-color:var(--primary-color);
+}
+
+.menu-btn{
+    grid-area:menu;
+    width:2.5rem;
+    aspect-ratio:1;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    font-size:1.4rem;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.menu-btn:hover{
+    background:#EEF2FF;
+}
+
+#menu {
+    position: absolute;
+    top: 3.8rem; /* Sits cleanly right under the 3-dots button line */
+    right: var(--space-lg); /* Matches the sidebar's right padding perfectly */
+    background: var(--sidebar-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    min-width: 140px;
+    z-index: 110; /* Ensures it floats above the inbox list and search overlays */
+    overflow: hidden; /* Clips the child elements to match the border-radius */
+    animation: menuFadeIn 0.15s ease-out;
+}
+
+/* 3. Style the interactive menu items inside */
+.menu-item {
+    padding: var(--space-sm) var(--space-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #EF4444; /* Clean, modern Tailwind-style destructive red for logout */
+    cursor: pointer;
+    background: transparent;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.menu-item:hover {
+    background-color: #FEF2F2; /* Soft red tint on hover to signify an exit action */
+    color: #B91C1C;
+}
+
+/* 4. Smooth dropdown entrance animation */
+@keyframes menuFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#inbox{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    overflow-y:auto;
+    background:var(--sidebar-bg);
+    border-right:1px solid var(--border-color);
+    scrollbar-width:thin;
+    scrollbar-color:#cbd5e1 transparent;
+}
+
+#main{
+    flex:1;
+    position:relative;
+    overflow:hidden;
+}
+
+#wel{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+
+    z-index:0;
+}
+
+/* Chat Item in List */
+.chats, .conversations {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+  position: relative;
+  min-width: 0;                   /* <-- Prevents the row content from blowing up the width */
+}
+
+.chats:hover, .conversations:hover {
+  background-color: #f1f5f9;
+}
+
+.profile_pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+  background-color: #cbd5e1;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.info .top{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    min-width: 0;
+}
+
+.name{
+    flex: 1;
+    min-width: 0;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.time{
+    flex-shrink: 0;
+
+    font-size: .75rem;
+    color: var(--text-muted);
+}
+
+.msg {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.bottom{
+    display: flex;
+    min-width: 0;
+}
+
+.bottom .msg{
+    flex: 1;
+    min-width: 0;
+}
+
+.unreadBadge {
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+
+/* Search Results Overlay */
+#search_results {
+    position: absolute;
+    top: 130px; /* Renders just below the header */
+    left: 0;
+    width: 100%;
+    max-height: calc(100vh - 130px);
+    background: var(--sidebar-bg);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    z-index: 100;
+    /* Removed the fixed positioning and red background */
+}
+
+.search-heading{
+    padding: 8px 16px;
+
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    color: #7a7a7a;
+
+    background: #f6f6f6;
+
+    position: sticky;
+    top: 0;
+}
+
+.conversations,
+.others{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 16px;
+
+    cursor: pointer;
+
+    transition: background .2s ease;
+}
+
+.conversations:hover,
+.others:hover{
+    background: #f3f5f7;
+}
+
+.conversations + .conversations,
+.others + .others{
+    border-top: 1px solid #ececec;
+}
+
+.no-results{
+    padding: 18px;
+
+    text-align: center;
+
+    color: #888;
+    font-size: .9rem;
+}
+
+/* Chat Window */
+#chat_box{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    background:var(--chat-bg);
+    z-index:1;
+}
+
+#head_chat {
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  background: var(--sidebar-bg);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+#profile_pic_2 {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+#name_2 {
+  font-weight: 600;
+}
+
+#chat_body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-header {
+  align-self: center;
+  background: #e2e8f0;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Bubbles */
+.message {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  margin-bottom: 8px;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.message-document{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    padding: .8rem 1rem;
+
+    width: 18rem;
+
+    background: #f8f8f8;
+    border-radius: .8rem;
+
+    color: inherit;
+    text-decoration: none;
+
+    transition: background .2s;
+}
+
+.message-document:hover{
+    background: #ececec;
+}
+
+.message-document span{
+    font-size: 2rem;
+}
+
+.document-info{
+    display:flex;
+    flex-direction:column;
+    gap:.15rem;
+
+    overflow:hidden;
+}
+
+.document-info div:first-child{
+    font-weight:600;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    color: #666;
+}
+
+.document-type{
+    font-size:.8rem;
+    color:#666;
+}
+
+.document-info div:last-child{
+    font-size:.8rem;
+    color:#888;
+}
+
+.message.sent {
+  align-self: flex-end;
+  background-color: var(--sent-msg);
+  color: var(--sent-text);
+  border-bottom-right-radius: 4px;
+}
+
+.message.received {
+  align-self: flex-start;
+  background-color: var(--received-msg);
+  color: var(--received-text);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.message-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 0.7rem;
+}
+
+.sent .message-meta {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.received .message-meta {
+  color: var(--text-muted);
+}
+
+.read-status {
+  font-size: 0.8rem;
+}
+
+/* Footer Input Area */
+#footer {
+  padding: 15px 25px;
+  background: var(--sidebar-bg);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-top: 1px solid var(--border-color);
+  position: relative; /* Gives context for the absolute menu positioning */
+}
+
+#add-file-btn {
+  background-color: #f1f5f9;
+  color: var(--text-muted);
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0; /* Prevents the button from squishing */
+}
+
+#add-file-btn:hover {
+  background-color: #eef2ff;
+  color: var(--primary-color);
+  transform: rotate(90deg); /* Subtle, satisfying rotation animation */
+}
+
+/* File Picker Options Dropdown Menu */
+#file-options {
+  position: absolute;
+  bottom: 75px; /* Sits cleanly right above the footer input */
+  left: 25px;
+  background: var(--sidebar-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  padding: var(--space-xs);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+}
+
+#file-options .option {
+  padding: var(--space-sm) var(--space-md);
+  font-size: 0.875rem;
+  color: var(--text-main);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s, color 0.2s;
+  text-transform: capitalize;
+}
+
+#file-options .option:hover {
+  background-color: #f1f5f9;
+  color: var(--primary-color);
+}
+
+#type-box {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: 1px solid var(--border-color);
+  background-color: #f1f5f9;
+  outline: none;
+  font-size: 0.9375rem;
+}
+
+#send-btn, #sendButton {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#send-btn:hover, #sendButton:hover {
+  background-color: var(--primary-hover);
+}
+
+/* File Previews in Chat */
+.message img, .message video {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+
+/* Overlay for Upload */
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  color: white;
+}
+
+#preview {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#preview img, #preview video, #preview iframe {
+  max-width: 90%;
+  max-height: 70vh;
+  border-radius: 8px;
+}
+
+#overlay #footer {
+  background: transparent;
+  border-top: none;
+}
+
+#overlay #type-box {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: none;
+}
+
+#overlay_cancel-btn {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#overlay_cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#overlay_send-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+#overlay_send-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+#overlay_send-btn:active {
+  transform: scale(0.96);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  #box {
+    flex-direction: column;
+  }
+
+  #inbox {
+    flex: 1;
+    width: 100%;
+  }
+  
+  #chat_box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+  }
+  
+  #chat_box:not(:empty) {
+    display: flex;
+  }
+  
+  /* If chat_box is empty/not present, inbox shows. 
+     JS creates #chat_box when a room is opened. 
+     We should probably add a back button in JS for mobile, 
+     but I'll add a CSS-only way to show it's possible. */
+}
+
+#preview{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 70vh;
+
+    overflow: hidden;
+}
+
+#preview img,
+#preview video{
+    max-width: 100%;
+    max-height: 100%;
+
+    width: auto;
+    height: auto;
+
+    object-fit: contain;
+}
+
+#preview audio{
+    width: 90%;
+}
+
+#preview iframe{
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+#indicator{
+    font-size: 1rem;
+    font-weight: 600;
+    color: #555;
+    min-width: 4rem;
+    text-align: center;
+}
+
+/* File Previews in Chat - Constrained WhatsApp-style Thumbnails */
+.message img, .message video {
+  max-width: 280px;
+  max-height: 200px;
+  object-fit: cover; /* Crops nicely without distorting aspect ratios */
+  border-radius: 8px;
+  margin-bottom: 5px;
+  cursor: pointer; /* Indicated playability/clickability */
+  display: block;
+  transition: filter 0.2s ease;
+}
+
+.message img:hover, .message video:hover {
+  filter: brightness(0.85); /* Visual feedback on hover */
+}
+
+/* Full-Screen Media Viewer Overlay */
+#media-viewer-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 200; /* Sits completely on top of the chat box and uploads */
+  animation: fadeIn 0.2s ease-out;
+}
+
+#media-viewer-close {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.2s, color 0.2s;
+  z-index: 210;
+}
+
+#media-viewer-close:hover {
+  transform: scale(1.15);
+  color: var(--primary-color);
+}
+
+#media-viewer-content {
+  max-width: 90%;
+  max-height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#media-viewer-content img,
+#media-viewer-content video {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain; /* Preserves exact aspect ratio in full screen */
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* ==========================================
+   NATURAL FLEXBOX CENTERING FOR PREVIEW NAV
+   ========================================== */
+
+/* Style the wrapper container to align its items perfectly in the center of the main view area */
+#preview-navigation {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 1.5rem !important;
+  width: 100% !important;
+  margin-bottom: 1rem !important; /* Adds a comfortable gap right above the caption input bar */
+  z-index: 110;
+  user-select: none;
+}
+
+/* Premium Glassmorphic Navigation Buttons */
+#prev-btn, #next-btn {
+  /* Clear out all problematic fixed/absolute screen offset coordinate math */
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  
+  width: 2.8rem !important;
+  height: 2.8rem !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  font-size: 1.1rem !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Center Index Counter Text Override */
+#preview-navigation #indicator {
+  position: relative !important;
+  left: auto !important;
+  transform: none !important;
+  bottom: auto !important;
+  min-width: 4rem !important;
+  text-align: center !important;
+  
+  color: #ffffff !important; /* Force overrides the muddy dark gray #555 color parameter */
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Interactive States */
+#prev-btn:hover, #next-btn:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  transform: scale(1.08) !important;
+}
+
+#prev-btn:active, #next-btn:active {
+  transform: scale(0.92) !important;
+}
+
+/* Graceful Bound-Limit States */
+#prev-btn:disabled, #next-btn:disabled {
+  opacity: 0.2 !important;
+  cursor: not-allowed !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}

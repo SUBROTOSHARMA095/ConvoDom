@@ -1,0 +1,183 @@
+/* ==========================================
+   1. RESET & BASE STYLES
+   ========================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #FFC1B4;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px; /* Safe padding for small mobile screens */
+}
+
+/* ==========================================
+   2. LAYOUT CONTAINER (DITCHING FIXED WIDTHS)
+   ========================================== */
+div {
+    width: 100%;
+    max-width: 460px; /* Restricts maximum size on desktop */
+    height: auto;     /* Auto-adjusts so content never overflows */
+    background-color: #034C53;
+    border-radius: 20px;
+    padding: 40px;    /* Balanced, relative internal padding */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease;
+}
+
+/* Hides HTML line-breaks so we can control layout cleanly using CSS margins */
+div br {
+    display: none;
+}
+
+/* ==========================================
+   3. TYPOGRAPHY & FORM CONTROLS
+   ========================================== */
+h1 {
+    color: white;
+    font-size: 2.25rem; /* Dynamic relative font-size */
+    margin-bottom: 25px;
+}
+
+label {
+    display: block; /* Stacks labels cleanly above input fields */
+    color: white;
+    font-size: 1rem;
+    font-weight: 300;
+    margin-bottom: 8px;
+}
+
+/* Standardized, accessible inputs */
+input[type="text"],
+input[type="password"] {
+    display: block;
+    width: 100%;
+    height: 44px; /* Perfect tap-target size for mobile */
+    font-size: 1rem;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.95);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    background-color: #ffffff;
+    outline: 2px solid #FFC1B4;
+    box-shadow: 0 0 8px rgba(255, 193, 180, 0.4);
+}
+
+/* Clear margins that used to push items out-of-bounds */
+#password {
+    margin-left: 0; 
+}
+
+/* ==========================================
+   4. CHECKBOX & SHOW PASSWORD ALIGNMENT
+   ========================================== */
+#showPassword {
+    display: inline-block;
+    height: 18px;
+    width: 18px;
+    margin-right: 8px;
+    margin-bottom: 25px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+#showLable {
+    display: inline-block;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 300;
+    margin-bottom: 25px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+/* ==========================================
+   5. SUBMIT BUTTON & ANIMATIONS
+   ========================================== */
+#submit {
+    display: block;
+    background-color: #ffffff;
+    border: none;
+    color: #040000;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    width: 130px;
+    height: 46px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Light wave sweep hover effect */
+#submit::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 30%,
+        rgba(255, 255, 255, 0.5) 50%,
+        rgba(255, 255, 255, 0) 70%
+    );
+    transform: skewX(-20deg);
+    transition: 0.5s;
+    z-index: 0;
+}
+
+#submit:hover::before {
+    left: 100%;
+}
+
+#submit:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+#submit:active {
+    transform: scale(0.96);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================
+   6. REGISTRATION CONTRAST CORRECTIONS
+   ========================================== */
+/* Overrides inline HTML styling to ensure highly-visible text on your dark teal background */
+div h3 {
+    color: rgba(255, 255, 255, 0.8) !important; 
+    font-size: 0.95rem;
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+div h3 a {
+    color: #FFC1B4 !important; /* Branded pink/coral link */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+div h3 a:hover {
+    text-decoration: underline;
+    color: #ffffff !important;
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Convos</title>
+  <link rel="stylesheet" href="convo.css" />
+</head>
+<body>
+
+  <div id=box>
+    <div id=sidebar>
+      <div id=chats_head> 
+        <h2>Convos</h2>
+        <input id="search" placeholder="search...">
+        <button class="menu-btn">&#8942;</button>
+      </div>
+      <div id='search_results' style='display: none'>
+      </div>
+      <div id=inbox>
+      </div>
+    </div>
+    <div id="main">
+      <h1 id='wel'>Welcome!</h1>
+    </div>
+  </div>
+<script src="/socket.io/socket.io.js"></script>
+<script type = "module" src="convo.js"></script>
+</body>
+</html>
